@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure UPI Payment</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f2f5fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .payment-box {
+      background: white;
+      padding: 35px 25px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 5px 25px #0001;
+    }
+
+    h2 {
+      color: #202b45;
+      margin-top: 0;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .amount-label {
+      display: block;
+      text-align: left;
+      margin: 25px 0 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .amount-input {
+      width: 100%;
+      padding: 14px;
+      font-size: 24px;
+      text-align: center;
+      border: 1px solid #d6dce5;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .amount-input:focus {
+      border-color: #087bdf;
+      box-shadow: 0 0 0 3px #087bdf20;
+    }
+
+    .upi {
+      color: #555;
+      margin: 22px 0;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .pay-button {
+      display: block;
+      width: 100%;
+      background: #087bdf;
+      color: white;
+      border: none;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 9px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .pay-button:hover {
+      background: #0668bd;
+    }
+
+    .copy-button {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      background: white;
+      color: #087bdf;
+      border: 1px solid #087bdf;
+      padding: 13px;
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .copy-button:hover {
+      background: #f2f8ff;
+    }
+
+    .note {
+      color: #777;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 22px;
+    }
+
+    #status {
+      color: #087bdf;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="payment-box">
+
+    <h2>Complete Your Payment</h2>
+
+    <p class="subtitle">
+      Enter the amount you wish to pay
+    </p>
+
+    <label for="amount" class="amount-label">
+      Amount Payable (INR)
+    </label>
+
+    <input
+      type="number"
+      id="amount"
+      class="amount-input"
+      placeholder="₹ Enter amount"
+      min="1"
+      step="0.01"
+      inputmode="decimal"
+      autocomplete="off"
+    >
+
+    <p class="upi">
+      UPI ID: <b id="upiId">hex.co@ptaxis</b>
+    </p>
+
+    <button
+      class="pay-button"
+      type="button"
+      onclick="payViaUPI()">
+      Pay Now with UPI
+    </button>
+
+    <button
+      class="copy-button"
+      type="button"
+      onclick="copyUPI()">
+      Copy UPI ID
+    </button>
+
+    <p id="status" role="status" aria-live="polite"></p>
+
+    <p class="note">
+      You will be redirected to a UPI-compatible payment app.
+      Please verify the beneficiary, amount and payment details
+      before confirming your payment.
+    </p>
+
+  </div>
+
+  <script>
+    const UPI_ID = "hex.co@ptaxis";
+    const PAYEE_NAME = "HEX";
+    const PAYMENT_NOTE = "Exclusive Ticket";
+
+    function payViaUPI() {
+      const amountInput = document.getElementById("amount");
+      const amount = Number(amountInput.value);
+
+      if (
+        amountInput.value.trim() === "" ||
+        !Number.isFinite(amount) ||
+        amount < 1
+      ) {
+        alert("Please enter a valid amount of at least ₹1.");
+        amountInput.focus();
+        return;
+      }
+
+      if (!Number.isFinite(amount) || amount > 99999999) {
+        alert("Please enter a valid payment amount.");
+        amountInput.focus();
+        return;
+      }
+
+      const params = new URLSearchParams({
+        pa: UPI_ID,
+        pn: PAYEE_NAME,
+        am: amount.toFixed(2),
+        cu: "INR",
+        tn: PAYMENT_NOTE
+      });
+
+      const upiLink = "upi://pay?" + params.toString();
+
+      window.location.href = upiLink;
+    }
+
+    async function copyUPI() {
+      const status = document.getElementById("status");
+
+      try {
+        await navigator.clipboard.writeText(UPI_ID);
+        status.textContent = "UPI ID copied successfully!";
+      } catch (error) {
+        status.textContent = "Please copy the UPI ID manually: " + UPI_ID;
+      }
+    }
+  </script>
+
+</body>
+</html>
