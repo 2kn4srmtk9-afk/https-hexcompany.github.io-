@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Secure UPI Payment</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f2f5fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+    }
+
+    .payment-box {
+      background: white;
+      padding: 35px 25px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: 0 5px 25px #0001;
+    }
+
+    h2 { color: #202b45; }
+
+    .amount {
+      font-size: 34px;
+      font-weight: bold;
+      color: #111;
+      margin: 25px 0;
+    }
+
+    .upi {
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .pay-button {
+      display: block;
+      background: #087bdf;
+      color: white;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 9px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .note {
+      color: #777;
+      font-size: 13px;
+      margin-top: 22px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="payment-box">
+    <h2>Complete Your Payment</h2>
+
+    <p>Amount Payable</p>
+    <div class="amount">₹10,497</div>
+
+    <p class="upi">
+      UPI ID: <b>hex.co@ptaxis</b>
+    </p>
+
+    <a class="pay-button"
+       href="upi://pay?pa=hex.co%40ptaxis&pn=Payment%20Recipient&am=10497.00&cu=INR&tn=Payment">
+       Pay Now with UPI
+    </a>
+
+    <p class="note">
+      You will be redirected to your UPI payment app.
+      Please verify the beneficiary and amount before paying.
+    </p>
+  </div>
+</body>
+</html>
